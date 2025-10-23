@@ -1,0 +1,124 @@
+/* ===== Estilos generales ====== */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  color: black;
+  line-height: 0.8;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: normal;
+  color: black;
+}
+
+h3 {
+  font-weight: bold;
+  margin: 0;
+}
+
+section {
+  display: flex;
+}
+
+
+/* ======= Encabezado ======= */
+
+.encabezado {
+  background-color: rgb(245, 245, 7);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 200px;
+}
+
+.encabezado-logo {
+  text-align: center;
+  margin: 10px;
+}
+
+.encabezado-secciones a {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  text-decoration: none;
+  text-align: right;
+  font-weight: bolder;
+  font-size: 20px;
+  color: black;
+  margin-left: 40px;
+}
+
+.encabezado-secciones a:hover {
+  text-decoration: underline;
+}
+
+#puntos {
+  font-size: 1200;
+  text-decoration: underline;
+}
+
+/* ===== Listado de puntos de asistencia ===== */
+.listado {
+  display: left;
+  margin-top: 40px;
+  margin-left: 50px;
+  max-width: 450px;
+  line-height: 2;
+}
+
+.listado ul {
+  list-style: none;
+  padding: 5px;
+}
+
+#buscador {
+  width: 350px;
+  padding: 8px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  border-color: black;
+}
+
+#logo-filtro {
+  display: flex;
+  align-items: left;
+  height: 50px;
+  margin: -45px 380px;
+}
+
+#filtro-btn {
+  display:flex;
+  height: 40px;
+  width: 40px;
+  margin: 0px 380px;
+  opacity: 0;
+}
+
+#filtros {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 5px;
+  background-color: aliceblue;
+  margin: 0px 50px;
+}
+
+legend {
+  font-weight: 500;
+}
+
+.oculto {
+  display: none;
+}
+
+/* ===== Mapa ===== */
+.mapa{
+  text-align: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+

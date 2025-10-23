@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Turismo Buenos Aires - Puntos de asistencia</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="filtros.js"></script>
+    <script src="centros.js"></script>
+
+</head>
+
+<body>
+    <header class="encabezado">
+        <div class="encabezado-logo">
+            <img id="logo" src="/puntos-de-asistencia/images/logoTurismoBA.png" alt="Logo Turismo Buenos Aires" />
+        </div>
+
+        <nav class="encabezado-secciones">
+            <a href="#" id="sitios">Sitios para visitar</a>
+            <a href="#" id="eventos">Eventos</a>
+            <a href="#" id="puntos">Puntos de asistencia</a>
+        </nav>
+    </header>
+    <section class="componentes">
+        <div class="listado">
+            <input type="text" id="buscador" placeholder="Buscar por nombre">
+      
+            <img id="logo-filtro" src="/puntos-de-asistencia/images/filtrado.jpg">
+            <button id="filtro-btn"></button>
+
+            <fieldset id="filtros" class="oculto">
+                <legend>Selecciona un tipo de punto de asistencia</legend>
+                <input id="cb-centros" type="checkbox">
+                <label for="cb-centros">Centros fijos</label>
+                <br>
+                <input id="cb-moviles" type="checkbox">
+                <label for="cb-moviles">Unidades móviles</label>
+            </fieldset>
+
+            <ul id="lista-centros"></ul>
+        </div>
+        <div class="mapa">
+            <h1>Aca va el mapa</h1>
+    </section>
+    </div>
+</body>
+
+</html>
