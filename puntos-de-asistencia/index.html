@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Turismo Buenos Aires - Puntos de asistencia</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="filtros.js"></script>
     <script src="centros.js"></script>
-
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="mapa.js"></script>
 </head>
 
 <body>
@@ -18,33 +20,31 @@
         </div>
 
         <nav class="encabezado-secciones">
-            <a href="#" id="sitios">Sitios para visitar</a>
-            <a href="#" id="eventos">Eventos</a>
-            <a href="#" id="puntos">Puntos de asistencia</a>
+            <a href="#" id="sitios" class="">Sitios para visitar</a>
+            <a href="#" id="eventos" class="">Eventos</a>
+            <a href="#" id="puntos" class="encabezado-seleccionado">Puntos de asistencia</a>
         </nav>
     </header>
     <section class="componentes">
-        <div class="listado">
-            <input type="text" id="buscador" placeholder="Buscar por nombre">
-      
-            <img id="logo-filtro" src="/puntos-de-asistencia/images/filtrado.jpg">
-            <button id="filtro-btn"></button>
+        <div class="contenedor-mapa">
 
-            <fieldset id="filtros" class="oculto">
-                <legend>Selecciona un tipo de punto de asistencia</legend>
-                <input id="cb-centros" type="checkbox">
-                <label for="cb-centros">Centros fijos</label>
-                <br>
-                <input id="cb-moviles" type="checkbox">
-                <label for="cb-moviles">Unidades móviles</label>
-            </fieldset>
+            <div class="listado">
+                <input type="text" id="buscador" placeholder="Buscar por nombre, dirección u horario">
+                <fieldset id="filtros" class="oculto">
+                    <legend>Selecciona un tipo de punto de asistencia</legend>
+                    <input id="cb-centros" type="checkbox">
+                    <label for="cb-centros">Centros fijos</label>
+                    <br>
+                    <input id="cb-moviles" type="checkbox">
+                    <label for="cb-moviles">Unidades móviles</label>
+                </fieldset>
 
-            <ul id="lista-centros"></ul>
+                <ul id="lista-centros"></ul>
+            </div>
+            <div class="mapa" id="mapa" style="height: 600px; width: 100%;">
+            </div>
         </div>
-        <div class="mapa">
-            <h1>Aca va el mapa</h1>
     </section>
-    </div>
 </body>
 
 </html>

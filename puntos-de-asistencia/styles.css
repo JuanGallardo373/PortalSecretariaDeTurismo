@@ -63,11 +63,20 @@ section {
 
 /* ===== Listado de puntos de asistencia ===== */
 .listado {
-  display: left;
-  margin-top: 40px;
-  margin-left: 50px;
-  max-width: 450px;
-  line-height: 2;
+    display: left;
+    line-height: 2;
+    flex: 0 0 400px;
+    max-width: 400px;
+    min-width: 300px;
+    margin-top: 40px;
+    margin-right: 20px;
+    margin-left: 40px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 20px;
+    height: 600px;
+    overflow-y: auto;
 }
 
 .listado ul {
@@ -114,11 +123,26 @@ legend {
 }
 
 /* ===== Mapa ===== */
-.mapa{
-  text-align: center;
-  align-items: center;
-  height: 100%;
+.contenedor-mapa{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
   width: 100%;
+  height: auto;
 }
 
-
+.mapa {
+    text-align: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    margin-top: 40px;
+    margin-right: 20px;
+    margin-left: 40px;
+    padding: 20px;
+    flex: 1;
+    min-width: 300px;
+    height: 600px !important;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}

@@ -66,15 +66,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const listaCentros = document.getElementById("lista-centros");
     const cbCentros = document.getElementById("cb-centros");
     const cbMoviles = document.getElementById("cb-moviles");
+    const buscador = document.getElementById("buscador");
 
-    filtrarPuntos(cbCentros, cbMoviles, puntos, listaCentros);
+    function mostrarFiltrados() {
+        const texto = buscador.value.toLowerCase();
+        let puntosFiltrados = puntos.filter(p =>
+            p.nombre.toLowerCase().includes(texto) ||
+            p.direccion.toLowerCase().includes(texto) ||
+            p.horarios.toLowerCase().includes(texto)
+        );
+        // Filtrar por tipo si hay checkboxes activos
+        if (cbCentros.checked && !cbMoviles.checked) {
+            puntosFiltrados = puntosFiltrados.filter(p => p.tipo === 'C');
+        } else if (!cbCentros.checked && cbMoviles.checked) {
+            puntosFiltrados = puntosFiltrados.filter(p => p.tipo === 'M');
+        }
+        listarPuntos(puntosFiltrados, listaCentros);
+    }
 
+    cbCentros.addEventListener('change', mostrarFiltrados);
+    cbMoviles.addEventListener('change', mostrarFiltrados);
+    buscador.addEventListener('input', mostrarFiltrados);
+
+    mostrarFiltrados();
 });
 
 function listarPuntos(puntos, listaCentros) {
-    puntos.forEach(punto => {
+    listaCentros.innerHTML = '';
+    puntos.forEach((punto, idx) => {
         const item = document.createElement('li');
         item.innerHTML = `<h3>${punto.nombre}</h3>${punto.direccion}<br>Horario: ${punto.horarios}<hr>`;
+        item.style.cursor = 'pointer';
+        item.onclick = () => {
+            const [lat, lng] = punto.coordenadas.split(',').map(Number);
+            window.marcarCentro(lat, lng, punto.nombre);
+        };
         listaCentros.appendChild(item);
     });
 }
@@ -85,6 +111,11 @@ function listarCentros(puntos, listaCentros) {
         if (punto.tipo == 'C') {
             const item = document.createElement('li');
             item.innerHTML = `<h3>${punto.nombre}</h3>${punto.direccion}<br>Horario: ${punto.horarios}<hr>`;
+            item.style.cursor = 'pointer';
+            item.onclick = () => {
+                const [lat, lng] = punto.coordenadas.split(',').map(Number);
+                window.marcarCentro(lat, lng, punto.nombre);
+            };
             listaCentros.appendChild(item);
         }
     });
@@ -96,9 +127,13 @@ function listarMoviles(puntos, listaCentros) {
         if (punto.tipo == 'M') {
             const item = document.createElement('li');
             item.innerHTML = `<h3>${punto.nombre}</h3>${punto.direccion}<br>Horario: ${punto.horarios}<hr>`;
+            item.style.cursor = 'pointer';
+            item.onclick = () => {
+                const [lat, lng] = punto.coordenadas.split(',').map(Number);
+                window.marcarCentro(lat, lng, punto.nombre);
+            };
             listaCentros.appendChild(item);
         }
-
     });
 }
 
