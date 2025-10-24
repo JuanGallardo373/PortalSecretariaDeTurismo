@@ -70,7 +70,6 @@ section {
     min-width: 800px;
     margin-top: 40px;
     margin-right: 20px;
-    margin-left: 40px;
     background: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
@@ -138,7 +137,6 @@ legend {
     width: 100%;
     margin-top: 40px;
     margin-right: 20px;
-    margin-left: 40px;
     padding: 20px;
     flex: 1;
     min-width: 300px;
@@ -180,4 +178,62 @@ legend {
 .filtros-avanzados label, .filtros-avanzados select, .filtros-avanzados input[type="time"] {
     margin-right: 10px;
     margin-top: 8px;
+}
+
+
+@media (max-width: 900px) {
+    .contenedor-mapa {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .listado {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .mapa {
+        width: 100% !important;
+        min-width: 0;
+        margin-top: 20px;
+        flex: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .contenedor-mapa {
+        padding: 0;
+    }
+
+    .listado {
+        padding: 10px;
+    }
+
+}
+
+@media (min-width: 1024px) {
+    .contenedor-mapa {
+        flex-direction: row; 
+        height: 700px; 
+    }
+    .listado {
+        flex: 1 1 50%; 
+        max-height: 700px;
+        margin-right: 10px; 
+    }
+
+    .mapa {
+        flex: 1 1 50%;
+        height: 100%;
+        margin-left: 10px;
+    }
+}
+
+.card {
+    display: left;
+    min-width: 800px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 20px;
 }
