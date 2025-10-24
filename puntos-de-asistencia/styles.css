@@ -66,8 +66,8 @@ section {
     display: left;
     line-height: 2;
     flex: 0 0 400px;
-    max-width: 400px;
-    min-width: 300px;
+    max-width: 800px;
+    min-width: 800px;
     margin-top: 40px;
     margin-right: 20px;
     margin-left: 40px;
@@ -145,4 +145,39 @@ legend {
     height: 600px !important;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Filtros avanzados plegables */
+.buscador-filtros {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.filtros-btn {
+    background: #eaeaea;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.filtros-avanzados {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s cubic-bezier(.4,0,.2,1), opacity 0.3s;
+    margin-bottom: 10px;
+}
+.filtros-avanzados.visible {
+    max-height: 200px;
+    opacity: 1;
+    padding-bottom: 10px;
+}
+.filtros-avanzados label, .filtros-avanzados select, .filtros-avanzados input[type="time"] {
+    margin-right: 10px;
+    margin-top: 8px;
 }

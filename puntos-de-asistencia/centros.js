@@ -63,94 +63,115 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    const listaCentros = document.getElementById("lista-centros");
-    const cbCentros = document.getElementById("cb-centros");
-    const cbMoviles = document.getElementById("cb-moviles");
-    const buscador = document.getElementById("buscador");
+    // Elementos del DOM
+    const filterName = document.getElementById('filter-name');
+    const filterLocation = document.getElementById('filter-location');
+    const filterStartTime = document.getElementById('filter-start-time');
+    const filterEndTime = document.getElementById('filter-end-time');
+    const listaCentros = document.getElementById('lista-centros');
 
-    function mostrarFiltrados() {
-        const texto = buscador.value.toLowerCase();
-        let puntosFiltrados = puntos.filter(p =>
-            p.nombre.toLowerCase().includes(texto) ||
-            p.direccion.toLowerCase().includes(texto) ||
-            p.horarios.toLowerCase().includes(texto)
-        );
-        // Filtrar por tipo si hay checkboxes activos
-        if (cbCentros.checked && !cbMoviles.checked) {
-            puntosFiltrados = puntosFiltrados.filter(p => p.tipo === 'C');
-        } else if (!cbCentros.checked && cbMoviles.checked) {
-            puntosFiltrados = puntosFiltrados.filter(p => p.tipo === 'M');
-        }
-        listarPuntos(puntosFiltrados, listaCentros);
+    // Inicializa el select de ubicaciones con nombres únicos
+    function initializeFilters() {
+        const nombresUnicos = Array.from(new Set(puntos.map(p => p.nombre)));
+        filterLocation.innerHTML = '<option value="">Todas las ubicaciones</option>';
+        nombresUnicos.forEach(nombre => {
+            const option = document.createElement('option');
+            option.value = nombre;
+            option.textContent = nombre;
+            filterLocation.appendChild(option);
+        });
+        applyFilters();
     }
 
-    cbCentros.addEventListener('change', mostrarFiltrados);
-    cbMoviles.addEventListener('change', mostrarFiltrados);
-    buscador.addEventListener('input', mostrarFiltrados);
+    // Convierte una hora (HH:MM) a minutos
+    function timeToMinutes(timeStr) {
+        if (!timeStr) return 0;
+        const [hours, minutes] = timeStr.split(':').map(Number);
+        return (hours * 60) + minutes;
+    }
 
-    mostrarFiltrados();
+    // Aplica los filtros y actualiza la lista
+    function applyFilters() {
+        const nameValue = filterName.value.toLowerCase().trim();
+        const locationValue = filterLocation.value;
+        const startTimeMinutes = timeToMinutes(filterStartTime.value);
+        const endTimeMinutes = timeToMinutes(filterEndTime.value);
+
+        const filteredData = puntos.filter(p => {
+            // Filtro por nombre
+            const nameMatch = p.nombre.toLowerCase().includes(nameValue);
+            // Filtro por ubicación
+            const locationMatch = !locationValue || p.nombre === locationValue;
+            // Filtro por horario
+            const horarioRegex = /(\d{1,2}:\d{2})/g;
+            const horarios = p.horarios.match(horarioRegex);
+            let itemTimeMinutes = horarios ? timeToMinutes(horarios[0]) : 0;
+            let itemEndMinutes = horarios ? timeToMinutes(horarios[1]) : 1440;
+            let timeMatch;
+            if (startTimeMinutes > endTimeMinutes) {
+                timeMatch = itemTimeMinutes >= startTimeMinutes || itemEndMinutes <= endTimeMinutes;
+            } else {
+                timeMatch = itemTimeMinutes >= startTimeMinutes && itemEndMinutes <= endTimeMinutes;
+            }
+            return nameMatch && locationMatch && timeMatch;
+        });
+        renderResults(filteredData);
+    }
+
+    // Renderiza la lista de resultados filtrados
+    function renderResults(data) {
+        listaCentros.innerHTML = '';
+        if (data.length === 0) {
+            const noRes = document.createElement('li');
+            noRes.textContent = 'No se encontraron resultados.';
+            noRes.className = 'text-center py-4 text-gray-500';
+            listaCentros.appendChild(noRes);
+            return;
+        }
+        data.forEach(punto => {
+            const item = document.createElement('li');
+            item.className = "p-4 bg-gray-50 rounded-lg shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between transition duration-150 ease-in-out hover:shadow-md border border-gray-100 mb-2";
+            item.innerHTML = `<div><p class='text-lg font-bold text-blue-600'>${punto.nombre}</p><p class='text-sm text-gray-500'>${punto.direccion}</p></div><div class='text-left sm:text-right'><p class='text-xl font-extrabold text-green-700'>${punto.horarios}</p></div>`;
+            item.style.cursor = 'pointer';
+            item.onclick = () => {
+                const [lat, lng] = punto.coordenadas.split(',').map(Number);
+                window.marcarCentro(lat, lng, punto.nombre);
+            };
+            listaCentros.appendChild(item);
+        });
+    }
+
+    // --- Filtros plegables funcionales ---
+    function setupToggleButton() {
+        const toggleBtn = document.getElementById('toggle-filters-btn');
+        const advancedContent = document.getElementById('advanced-filters-content');
+        let isAdvancedOpen = false;
+        toggleBtn.addEventListener('click', function toggleHandler(e) {
+            e.preventDefault();
+            isAdvancedOpen = !isAdvancedOpen;
+            if (isAdvancedOpen) {
+                advancedContent.classList.add('open');
+                toggleBtn.classList.add('bg-blue-700');
+                toggleBtn.classList.remove('bg-blue-600');
+                toggleBtn.querySelector('span')?.remove(); // Remove old text if any
+                toggleBtn.innerHTML = `<img src='images/icono-filtrado.jpg' alt='icono filtro' style='height:22px;width:22px;vertical-align:middle;margin-right:8px;'> Ocultar Filtros`;
+            } else {
+                advancedContent.classList.remove('open');
+                toggleBtn.classList.remove('bg-blue-700');
+                toggleBtn.classList.add('bg-blue-600');
+                toggleBtn.querySelector('span')?.remove();
+                toggleBtn.innerHTML = `<img src='images/icono-filtrado.jpg' alt='icono filtro' style='height:22px;width:22px;vertical-align:middle;margin-right:8px;'> Filtros Avanzados`;
+            }
+            // Reconectar el evento después de cambiar el innerHTML
+            setupToggleButton();
+        }, { once: true });
+    }
+
+    filterName.addEventListener('input', applyFilters);
+    filterLocation.addEventListener('change', applyFilters);
+    filterStartTime.addEventListener('input', applyFilters);
+    filterEndTime.addEventListener('input', applyFilters);
+
+    initializeFilters();
+    setupToggleButton();
 });
-
-function listarPuntos(puntos, listaCentros) {
-    listaCentros.innerHTML = '';
-    puntos.forEach((punto, idx) => {
-        const item = document.createElement('li');
-        item.innerHTML = `<h3>${punto.nombre}</h3>${punto.direccion}<br>Horario: ${punto.horarios}<hr>`;
-        item.style.cursor = 'pointer';
-        item.onclick = () => {
-            const [lat, lng] = punto.coordenadas.split(',').map(Number);
-            window.marcarCentro(lat, lng, punto.nombre);
-        };
-        listaCentros.appendChild(item);
-    });
-}
-
-function listarCentros(puntos, listaCentros) {
-    listaCentros.innerHTML = '';
-    puntos.forEach(punto => {
-        if (punto.tipo == 'C') {
-            const item = document.createElement('li');
-            item.innerHTML = `<h3>${punto.nombre}</h3>${punto.direccion}<br>Horario: ${punto.horarios}<hr>`;
-            item.style.cursor = 'pointer';
-            item.onclick = () => {
-                const [lat, lng] = punto.coordenadas.split(',').map(Number);
-                window.marcarCentro(lat, lng, punto.nombre);
-            };
-            listaCentros.appendChild(item);
-        }
-    });
-}
-
-function listarMoviles(puntos, listaCentros) {
-    listaCentros.innerHTML = '';
-    puntos.forEach(punto => {
-        if (punto.tipo == 'M') {
-            const item = document.createElement('li');
-            item.innerHTML = `<h3>${punto.nombre}</h3>${punto.direccion}<br>Horario: ${punto.horarios}<hr>`;
-            item.style.cursor = 'pointer';
-            item.onclick = () => {
-                const [lat, lng] = punto.coordenadas.split(',').map(Number);
-                window.marcarCentro(lat, lng, punto.nombre);
-            };
-            listaCentros.appendChild(item);
-        }
-    });
-}
-
-function filtrarPuntos(cbCentros, cbMoviles, puntos, listaCentros) {
-    cbCentros.addEventListener('change', function () {
-        if (cbCentros.checked) {
-            listarCentros(puntos, listaCentros);
-        }
-    });
-    cbMoviles.addEventListener('change', function () {
-        if (cbMoviles.checked) {
-            listarMoviles(puntos, listaCentros);
-        }
-    });
-
-    if (!cbCentros.checked && !cbMoviles.checked) {
-        listarPuntos(puntos, listaCentros);
-        return;
-    }
-}
