@@ -25,7 +25,6 @@ section {
   display: flex;
 }
 
-
 /* ======= Encabezado ======= */
 
 .encabezado {
@@ -64,10 +63,15 @@ section {
 /* ===== Listado de puntos de asistencia ===== */
 .listado {
   display: left;
-  margin-top: 40px;
-  margin-left: 50px;
-  max-width: 450px;
   line-height: 2;
+  margin-top: 40px;
+  margin-right: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  height: 800px;
+  overflow-y: auto;
 }
 
 .listado ul {
@@ -91,7 +95,7 @@ section {
 }
 
 #filtro-btn {
-  display:flex;
+  display: flex;
   height: 40px;
   width: 40px;
   margin: 0px 380px;
@@ -114,11 +118,140 @@ legend {
 }
 
 /* ===== Mapa ===== */
-.mapa{
+.contenedor-mapa {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  height: auto;
+}
+
+.mapa {
   text-align: center;
   align-items: center;
   height: 100%;
   width: 100%;
+  margin-top: 40px;
+  margin-right: 20px;
+  padding: 20px;
+  flex: 1;
+  min-width: 800px;
+  height: 750px !important;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
+/* Filtros avanzados plegables */
+.buscador-filtros {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
 
+.filtros-btn {
+  background: #eaeaea;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filtros-avanzados {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+  margin-bottom: 10px;
+}
+
+.filtros-avanzados.visible {
+  max-height: 200px;
+  opacity: 1;
+  padding-bottom: 10px;
+}
+
+.filtros-avanzados label,
+.filtros-avanzados select,
+.filtros-avanzados input[type="time"] {
+  margin-right: 10px;
+  margin-top: 8px;
+}
+
+.resaltado {
+  background-color: lemonchiffon;
+  border: gray 1px solid;
+}
+
+@media (max-width: 900px) {
+  .contenedor-mapa {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .listado {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .mapa {
+    width: 100% !important;
+    min-width: 0;
+    margin-top: 20px;
+    flex: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .contenedor-mapa {
+    padding: 0;
+  }
+
+  .listado {
+    padding: 10px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .contenedor-mapa {
+    flex-direction: row;
+    height: 700px;
+  }
+
+  .listado {
+    flex: 1 1 20% ;
+    max-height: 800px;
+    margin-right: 10px;
+  }
+
+  .mapa {
+    flex: 1 1 50%;
+    height: 100%;
+    margin-left: 10px;
+  }
+}
+
+.card {
+  display: left;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+}
+
+#lista-centros>li {
+  flex-direction: column;
+}
+
+#lista-centros>li>div {
+  margin-bottom: 10px;
+}
+
+/* Estilos para Leaflet */
+.leaflet-popup-content-wrapper {
+  font-size: 14px;
+}

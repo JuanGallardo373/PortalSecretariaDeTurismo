@@ -5,7 +5,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Turismo Buenos Aires - Puntos de asistencia</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="mapa.js"></script>
     <script src="filtros.js"></script>
     <script src="centros.js"></script>
 
@@ -14,37 +18,85 @@
 <body>
     <header class="encabezado">
         <div class="encabezado-logo">
-            <img id="logo" src="/puntos-de-asistencia/images/logoTurismoBA.png" alt="Logo Turismo Buenos Aires" />
+            <img id="logo" src="/PortalSecretariaDeTurismo-rama_Bruno/puntos-de-asistencia/images/logoTurismoBA.png" alt="Logo Turismo Buenos Aires" />
         </div>
 
         <nav class="encabezado-secciones">
-            <a href="#" id="sitios">Sitios para visitar</a>
-            <a href="#" id="eventos">Eventos</a>
-            <a href="#" id="puntos">Puntos de asistencia</a>
+            <a href="#" id="sitios" class="">Sitios para visitar</a>
+            <a href="#" id="eventos" class="">Eventos</a>
+            <a href="#" id="puntos" class="encabezado-seleccionado">Puntos de asistencia</a>
         </nav>
     </header>
     <section class="componentes">
-        <div class="listado">
-            <input type="text" id="buscador" placeholder="Buscar por nombre">
-      
-            <img id="logo-filtro" src="/puntos-de-asistencia/images/filtrado.jpg">
-            <button id="filtro-btn"></button>
+        <div class="contenedor-mapa">
 
-            <fieldset id="filtros" class="oculto">
-                <legend>Selecciona un tipo de punto de asistencia</legend>
-                <input id="cb-centros" type="checkbox">
-                <label for="cb-centros">Centros fijos</label>
-                <br>
-                <input id="cb-moviles" type="checkbox">
-                <label for="cb-moviles">Unidades móviles</label>
-            </fieldset>
+            <div class="listado card">
+                <div id="filter-container"
+                    class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 mb-8">
+                    <div class="flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-4">
+                        <div class="flex-grow">
+                            <label for="filter-name"
+                                class="block text-sm font-medium text-gray-700 mb-1">Buscar
+                                (Nombre)</label>
+                            <input type="text" id="filter-name"
+                                placeholder="Escribe el nombre del centro..."
+                                class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <button id="toggle-filters-btn"
+                            class="px-4 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-150 ease-in-out flex-shrink-0 flex items-center justify-center sm:w-auto w-full">
+                        </button>
+                    </div>
+                    <div id="advanced-filters-content" class="collapsible-content transition-all duration-500 ease-in-out">
+                        <hr class="my-4 border-gray-200">
+                        <h3 class="text-md font-bold text-gray-700 mb-3">
+                            Opciones de Filtrado Adicionales
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label for="filter-type"
+                                       class="block text-sm font-medium text-gray-700 mb-1">Tipo de punto</label>
+                                <select id="filter-type"
+                                        class="w-full p-2.5 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 appearance-none">
+                                </select>
+                            </div>
 
-            <ul id="lista-centros"></ul>
+                            <div>
+                                <label for="filter-start-time"
+                                       class="block text-sm font-medium text-gray-700 mb-1">Horario: Desde</label>
+
+                                <div class="relative">
+                                    <input type="time" id="filter-start-time" value="00:00"
+                                           class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 pr-10">
+
+                                    <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="filter-end-time"
+                                       class="block text-sm font-medium text-gray-700 mb-1">Horario: Hasta</label>
+
+                                <div class="relative">
+                                    <input type="time" id="filter-end-time" value="23:59"
+                                           class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 pr-10">
+
+                                    <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul id="lista-centros"></ul>
+                </div>
+            </div>
+
+            <div class="mapa card" id="mapa" style="height: 600px; width: 100%;">
+            </div>
         </div>
-        <div class="mapa">
-            <h1>Aca va el mapa</h1>
     </section>
-    </div>
 </body>
 
 </html>
