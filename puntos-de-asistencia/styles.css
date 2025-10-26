@@ -61,6 +61,11 @@ section {
 }
 
 /* ===== Listado de puntos de asistencia ===== */
+.resaltado {
+  background-color: lemonchiffon;
+  border: gray 1px solid;
+}
+
 .listado {
   display: left;
   line-height: 2;
@@ -182,10 +187,7 @@ legend {
   margin-top: 8px;
 }
 
-.resaltado {
-  background-color: lemonchiffon;
-  border: gray 1px solid;
-}
+
 
 @media (max-width: 900px) {
   .contenedor-mapa {

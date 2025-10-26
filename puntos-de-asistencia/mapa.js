@@ -23,9 +23,9 @@ function crearCentro(latitud, long, nombre) {
 function marcarEnLista(nombre) {
     const lista = document.getElementById('lista-centros');
     const items = lista.getElementsByTagName('li');
+    eliminarClaseResaltadoDeTodos();
     for (let item of items) {
         if (item.textContent.includes(nombre)) {
-            eliminarClaseResaltadoDeTodos();
             item.scrollIntoView({ behavior: 'smooth', block: 'center' });
             item.classList.add('resaltado');
         }
