@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Elementos del DOM
     const filterName = document.getElementById('filter-name');
     const filterType = document.getElementById('filter-type');
+    const filterLocation = document.getElementById('filter-location');
     const filterStartTime = document.getElementById('filter-start-time');
     const filterEndTime = document.getElementById('filter-end-time');
     const listaCentros = document.getElementById('lista-centros');
@@ -91,14 +92,28 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("El mapa no está inicializado. No se pueden dibujar los centros.");
         }
     }
+    
     // Inicializa el select de ubicaciones con nombres únicos
-    function initializeFilters() {
-        const tipos = Array.from(new Set(puntos.map(p => p.tipo)));
-        filterType.innerHTML = '<option value="">Todos los puntos</option>';
-        tipos.forEach(nombre => {
+    function initializeNames() {
+        const nombresUnicos = Array.from(new Set(puntos.map(p => p.nombre)));
+        filterLocation.innerHTML = '<option value="">Todas las ubicaciones</option>';
+        nombresUnicos.forEach(nombre => {
             const option = document.createElement('option');
             option.value = nombre;
             option.textContent = nombre;
+            filterLocation.appendChild(option);
+        });
+        applyFilters();
+    }
+
+    // Inicializa el select de tipos de puntos
+    function initializeFilters() {
+        const tipos = Array.from(new Set(puntos.map(p => p.tipo)));
+        filterType.innerHTML = '<option value="">Todos los puntos</option>';
+        tipos.forEach(tipo => {
+            const option = document.createElement('option');
+            option.value = tipo;
+            option.textContent = tipo;
             filterType.appendChild(option);
         });
         applyFilters();
@@ -161,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Aplica los filtros y actualiza la lista
     function applyFilters() {
         const nameValue = filterName.value.toLowerCase().trim();
+        const locationValue = filterLocation.value;
         const typeValue = filterType.value;
         const startTimeMinutes = timeToMinutes(filterStartTime.value);
         const endTimeMinutes = timeToMinutes(filterEndTime.value);
@@ -169,6 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Filtro por nombre
             const nameMatch = p.nombre.toLowerCase().includes(nameValue);
             // Filtro por ubicación
+            const locationMatch = !locationValue || p.nombre === locationValue;
+            // Filtro por tipo de punto
             const typeMatch = !typeValue || p.tipo === typeValue;
             // Filtro por horario
             const horarioRegex = /(\d{1,2}:\d{2})/g;
@@ -181,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 timeMatch = itemTimeMinutes >= startTimeMinutes && itemEndMinutes <= endTimeMinutes;
             }
-            return nameMatch && typeMatch && timeMatch;
+            return nameMatch && locationMatch && typeMatch && timeMatch;
         });
         renderResults(filteredData);
     }
@@ -249,11 +267,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     filterName.addEventListener('input', applyFilters);
+    filterLocation.addEventListener('change', applyFilters);
     filterType.addEventListener('change', applyFilters);
     filterStartTime.addEventListener('input', applyFilters);
     filterEndTime.addEventListener('input', applyFilters);
 
     window.dibujarCentrosEnMapa = dibujarCentrosEnMapa;
     initializeFilters();
+    initializeNames();
     setupToggleButton();
 });
