@@ -61,11 +61,6 @@ section {
 }
 
 /* ===== Listado de puntos de asistencia ===== */
-.resaltado {
-  background-color: lemonchiffon;
-  border: gray 1px solid;
-}
-
 .listado {
   display: left;
   line-height: 2;
@@ -82,6 +77,25 @@ section {
 .listado ul {
   list-style: none;
   padding: 5px;
+}
+
+.item-puntos {
+  padding: 1rem;
+  background-color: rgb(247, 247, 245);
+  border-radius: 10px;
+  margin-bottom: 5px;
+  text-align: center;
+  align-items: center;
+}
+
+.item-puntos:hover {
+  background-color: #d3d3d3;
+  cursor: pointer;
+}
+
+.resaltado {
+  background-color: bisque;
+  border: rgb(63, 63, 63) 2px solid;
 }
 
 #buscador {
@@ -245,13 +259,7 @@ legend {
   padding: 20px;
 }
 
-#lista-centros>li {
-  flex-direction: column;
-}
 
-#lista-centros>li>div {
-  margin-bottom: 10px;
-}
 
 /* Estilos para Leaflet */
 .leaflet-popup-content-wrapper {

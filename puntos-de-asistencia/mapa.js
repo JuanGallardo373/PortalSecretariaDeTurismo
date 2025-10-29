@@ -14,12 +14,13 @@ function inicializarMapa() {
 // Crea un centro en el mapa
 function crearCentro(latitud, long, nombre) {
     L.marker([latitud, long]).addTo(mapa)
-        .bindPopup(nombre).openPopup().addEventListener('click', function() {
+        .bindPopup(nombre).addEventListener('click', function() {
             mapa.setView([latitud, long], 15);
             marcarEnLista(nombre);
         });
 }
 
+// Marca un centro en la lista
 function marcarEnLista(nombre) {
     const lista = document.getElementById('lista-centros');
     const items = lista.getElementsByTagName('li');
@@ -59,6 +60,9 @@ window.crearCentro = crearCentro;
 
 // Permite que otros JS llamen a marcarCentro
 window.marcarCentro = marcarCentro;
+
+// Permite que otros JS llamen a marcarEnLista
+window.marcarEnLista = marcarEnLista;
 
 // Permite que otros JS verifiquen si el mapa existe
 window.mapaExiste = mapaExiste;

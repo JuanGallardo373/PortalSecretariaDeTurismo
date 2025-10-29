@@ -198,17 +198,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         data.forEach(punto => {
             const horarioColorClass = isCurrentlyOpen(punto) ? 'text-green-700' : 'text-red-600';
-
             const item = document.createElement('li');
-            item.className = "p-4 bg-gray-50 rounded-lg shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between transition duration-150 ease-in-out hover:shadow-md border border-gray-100 mb-2";
-
-            item.innerHTML = `<div><p class='text-lg font-bold text-blue-600'>${punto.nombre}</p><p class='text-m text-black-300'>${punto.direccion}</p></div><div class='text-left sm:text-right'><p class='text-xl font-bold ${horarioColorClass}'>${punto.horarios}</p></div>`;
-
+            item.className = 'item-puntos';
+            item.innerHTML = `<div><p class='text-lg font-bold text-blue-600'>${punto.nombre}</p><p class='text-m text-black-300'>${punto.direccion}</p></div><div class='text-left sm:text-center'><p class='text-lg font-bold ${horarioColorClass}'>${punto.horarios}</p></div>`;
             item.style.cursor = 'pointer';
 
             item.onclick = () => {
                 const [lat, lng] = punto.coordenadas.split(',').map(Number);
                 window.marcarCentro(lat, lng, punto.nombre);
+                window.marcarEnLista(punto.nombre);
             };
 
             listaCentros.appendChild(item);
